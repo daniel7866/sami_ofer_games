@@ -38,12 +38,13 @@ def Get_Next_Games(allGames = True) -> list:
         if next_game_date and next_game_time:
             details = row.find_all(string=GAME_DETAILS_FORMAT)
             game = {}
-            game['date'] = next_game_date
+            game['date'] = re.sub('[^0-9/]', "", next_game_date)
+            game['day'] = re.sub('[^א-ת]', "", next_game_date)
             game['time'] = next_game_time
 
             # traffic is usually a mess 3 hours before
             time_to_run_away = (datetime.strptime(next_game_time, "%H:%M") - timedelta(hours=3)).strftime("%H:%M")
-            game['time_to_run_away'] = 'חסימת כבישים:' + time_to_run_away
+            game['time_to_run_away'] = 'חסימת כבישים: ' + time_to_run_away
             game['details'] = ''
 
             for detail in details:
@@ -60,7 +61,7 @@ def Get_Next_Games(allGames = True) -> list:
 def To_String(game : map) -> str:
     res = ''
 
-    res += game['date'] + '\n'
+    res += game['date'] + ' ' + game['day'] + '\n'
     res += game['time'] + '\n'
     res += game['time_to_run_away'] + '\n'
     res += game['details'] + '\n'
