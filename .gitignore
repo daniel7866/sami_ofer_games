@@ -1,2 +1,4 @@
 /Dockerfile
 __pycache__/sami_ofer.cpython-39.pyc
+.env
+__pycache__/bot_message.cpython-39.pyc

@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import re
+from datetime import datetime, timedelta
 
 #######################
 ###### constants ######
@@ -39,7 +40,10 @@ def Get_Next_Games(allGames = True) -> list:
             game = {}
             game['date'] = next_game_date
             game['time'] = next_game_time
-            
+
+            # traffic is usually a mess 3 hours before
+            time_to_run_away = (datetime.strptime(next_game_time, "%H:%M") - timedelta(hours=3)).strftime("%H:%M")
+            game['time_to_run_away'] = 'חסימת כבישים:' + time_to_run_away
             game['details'] = ''
 
             for detail in details:
@@ -58,6 +62,7 @@ def To_String(game : map) -> str:
 
     res += game['date'] + '\n'
     res += game['time'] + '\n'
+    res += game['time_to_run_away'] + '\n'
     res += game['details'] + '\n'
 
     return res
